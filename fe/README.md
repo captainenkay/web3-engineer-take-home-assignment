@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend DApp (Next.js)
+
+This directory (`/fe`) contains the frontend for the Web3 Counter DApp. It is a [Next.js](https://nextjs.org/) application built with TypeScript, Tailwind CSS, and the `wagmi` library for wallet and contract interactions.
+
+---
+
+## Overview
+
+The application provides a user interface to:
+*   Connect and disconnect a MetaMask wallet.
+*   View the current value of the `Counter` smart contract.
+*   Send transactions to increment or decrement the counter.
+*   Receive real-time feedback on transaction status.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+From the project's root directory, navigate into this folder and install the required packages:
+
+```bash
+cd fe
+npm install
+```
+
+### 2. Run the Development Server
+
+Start the local development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available Scripts
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   `npm run dev`: Starts the development server.
+*   `npm run build`: Creates a production build of the application.
+*   `npm run start`: Starts the production server (requires a build first).
+*   `npm run lint`: Runs ESLint to check for code quality issues.
+*   `npm test`: Runs the unit tests using Vitest.
