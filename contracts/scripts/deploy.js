@@ -1,3 +1,5 @@
+// This script deploys the Counter.sol contract to the selected network.
+
 const hre = require("hardhat");
 
 async function main() {

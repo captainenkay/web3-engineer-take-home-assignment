@@ -8,6 +8,10 @@ import { config } from '@/lib/wagmi';
 import React from 'react';
 
 // Mock the wagmi hooks
+// --- WAGMI HOOK MOCKING ---
+// To unit test our component, we need to mock the hooks provided by the `wagmi` library.
+// This allows us to control the data and states these hooks return (e.g., wallet connected/disconnected, 
+// contract data, transaction status) without needing a real blockchain connection.
 vi.mock('wagmi', async (importOriginal) => {
   const original = await importOriginal<typeof import('wagmi')>();
   return {

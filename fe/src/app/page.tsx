@@ -13,32 +13,58 @@ import {
 import { counterAddress, counterAbi } from '@/lib/constants';
 
 export default function Home() {
-  const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { data: hash, error, isPending, writeContract } = useWriteContract();
+  // --- WAGMI HOOKS for WALLET CONNECTION ---
 
+  // `useAccount` provides information about the connected account, like its address and connection status.
+  const { address, isConnected } = useAccount();
+
+  // `useConnect` provides functions to initiate a connection to a wallet.
+  const { connect, connectors } = useConnect();
+
+  // `useDisconnect` provides a function to disconnect the currently connected wallet.
+  const { disconnect } = useDisconnect();
+
+  // --- WAGMI HOOKS for CONTRACT INTERACTION ---
+
+  // 1. READ from the contract.
+  // This hook reads the public `count` variable. `refetch` allows us to manually re-read the value.
   const { data: count, refetch } = useReadContract({
     address: counterAddress,
     abi: counterAbi,
     functionName: 'count',
   });
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+  // 2. WRITE to the contract.
+  // This hook provides the `writeContract` function to call state-changing methods.
+  // It returns the transaction `hash`, `isPending` state, and any `error` that occurs.
+  const { data: hash, error, isPending, writeContract } = useWriteContract();
 
+  // 3. WAIT for a transaction to be mined.
+  // This hook monitors a transaction hash and tells us when it's being confirmed (`isLoading`) 
+  // and when it has been successfully mined (`isSuccess`).
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  // --- SIDE EFFECTS ---
+
+  // This `useEffect` hook handles feedback for the user based on the transaction lifecycle.
+  // It runs whenever the transaction status (`isConfirmed`, `error`) changes.
   useEffect(() => {
+    // When the transaction is successfully confirmed by the network:
     if (isConfirmed) {
       toast.success('Transaction confirmed!');
-      refetch();
+      refetch(); // Re-fetch the counter value to update the UI.
     }
+    // If an error occurs while sending the transaction:
     if (error) {
       toast.error(error.message || 'Transaction failed.');
     }
   }, [isConfirmed, error, refetch]);
 
+  // --- EVENT HANDLERS ---
+
+  // This function is called when the 'Increment' button is clicked.
   const handleIncrement = () => {
     writeContract({
       address: counterAddress,
@@ -47,6 +73,7 @@ export default function Home() {
     });
   };
 
+  // This function is called when the 'Decrement' button is clicked.
   const handleDecrement = () => {
     writeContract({
       address: counterAddress,
@@ -55,6 +82,7 @@ export default function Home() {
     });
   };
 
+  // Find the MetaMask connector from the list of available connectors.
   const connector = connectors.find((c) => c.id === 'io.metamask');
 
   return (
